@@ -1,6 +1,11 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
+////////////////////////////////////////////////////////////////////
+// simple_kernel_module_lab1.c - lab1 part 2 make simple k-module //
+////////////////////////////////////////////////////////////////////
+
+
 
 
 /*
@@ -12,6 +17,11 @@ static int skm_lab1_init(void){
 	return 0;
 }
 
+
+
+/*
+ * skm_lab1_exit - exit func returns 0 on success
+ */
 static int skm_lab1_exit(void){
 	printk(KERN_ALERT "skm_lab1 module offloaded \n");
 	return 0;
