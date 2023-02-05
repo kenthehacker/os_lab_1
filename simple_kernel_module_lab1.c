@@ -5,8 +5,10 @@
 // simple_kernel_module_lab1.c - lab1 part 2 make simple k-module //
 ////////////////////////////////////////////////////////////////////
 
-
-
+unsigned long log_sec = 1;
+unsigned long log_nsec = 0;
+module_param(log_sec, ulong, 0644);
+module_param(log_nsec,ulong, 0644);
 
 /*
  * skm_lab1_init - init function returns 0 on success
