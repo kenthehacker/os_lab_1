@@ -15,7 +15,7 @@ module_param(log_nsec,ulong, 0644);
  */
 
 static int skm_lab1_init(void){
-	printk(KERN_ALERT "Howdie, this is part 2 of lab1 \n");
+	printk(KERN_ALERT "timer lab1 module loaded \n");
 	return 0;
 }
 
@@ -25,7 +25,7 @@ static int skm_lab1_init(void){
  * skm_lab1_exit - exit func returns 0 on success
  */
 static int skm_lab1_exit(void){
-	printk(KERN_ALERT "skm_lab1 module offloaded \n");
+	printk(KERN_ALERT "timer lab1 module offloaded \n");
 	return 0;
 }
 
@@ -33,5 +33,5 @@ module_init(skm_lab1_init);
 module_exit(skm_lab1_exit);
 
 MODULE_AUTHOR("kenthehacker");
-MODULE_DESCRIPTION("lab1 part 2");
+MODULE_DESCRIPTION("lab1 timer kmodule");
 
