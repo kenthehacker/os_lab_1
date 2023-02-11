@@ -1,0 +1,1 @@
+cmd_/project/scratch01/compile/ken.m/labs/os_lab_1/timer_kmodule_lab1.ko := arm-linux-gnueabihf-ld -r  -EL  --build-id=sha1  -T scripts/module.lds -o /project/scratch01/compile/ken.m/labs/os_lab_1/timer_kmodule_lab1.ko /project/scratch01/compile/ken.m/labs/os_lab_1/timer_kmodule_lab1.o /project/scratch01/compile/ken.m/labs/os_lab_1/timer_kmodule_lab1.mod.o;  true
