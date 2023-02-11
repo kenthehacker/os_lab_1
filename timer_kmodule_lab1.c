@@ -18,6 +18,7 @@ static struct hrtimer timer;
 
 
 static enum hrtimer_restart expiration(struct hrtimer *timer){
+	printk(KERN_ALERT "exipred \n");
 	return hrtimer_forward(timer, ktime_get(), timer_interval);
 }
 
@@ -59,9 +60,9 @@ static void skm_lab1_exit(void){
 	//use hrtimer_cancel() to cancel the module's timer
 	
 	if (hrtimer_cancel(&timer) == 0){
-		printk(KERN_ALERT "timer was not active \n \n");
+		printk(KERN_ALERT "timer was not active \n");
 	}else{
-		printk(KERN_ALERT "timer was active \n \n");
+		printk(KERN_ALERT "timer was active \n");
 	}
 
 }
