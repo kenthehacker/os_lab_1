@@ -1,10 +1,10 @@
 # os_lab_1
 
-### Names:
+### 1 Names:
 
-1) Kenichi Matsuo ken.m@wustl.edu
+Kenichi Matsuo ken.m@wustl.edu
 
-### Module Design:
+### 2 Module Design:
 
 I merely declared ulongs for log_sec and log_nsec set to 1 and 0 respectively,
 which would then be overwritten by the call to module_params. So if I altered the params
@@ -17,7 +17,7 @@ functions
 
 
 
-### Timer Design and Evaluation
+### 3 Timer Design and Evaluation
 
 Implementing this was simple, in order to see what the time stamp in which the timer
 was reset, all i had to do was to call on printk() every time the timer needed to be 
@@ -30,27 +30,25 @@ whenevr the clock has expired and needs to be reset.
 
 The following is a snippet of the print out:
 
-[241260.933076] exipred 
-[241261.033078] exipred 
-[241261.133083] exipred 
-[241261.233093] exipred 
-[241261.333098] exipred 
-[241261.433099] exipred 
-[241261.533106] exipred 
-[241261.633122] exipred 
-[241261.733116] exipred 
-[241261.833126] exipred 
-[241261.933130] exipred 
-[241262.033140] exipred 
-[241262.133142] exipred 
-[241262.233150] exipred 
-[241262.333154] exipred 
-[241262.433163] exipred 
+Feb 14 16:16:45 kenpi kernel: [10439.695734] exipred 
+Feb 14 16:16:45 kenpi kernel: [10439.795736] exipred 
+Feb 14 16:16:45 kenpi kernel: [10439.895742] exipred 
+Feb 14 16:16:45 kenpi kernel: [10439.995747] exipred 
+Feb 14 16:16:45 kenpi kernel: [10440.095784] exipred 
+Feb 14 16:16:45 kenpi kernel: [10440.195749] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.295753] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.395754] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.495762] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.595768] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.695770] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.795768] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.895776] exipred 
+Feb 14 16:16:46 kenpi kernel: [10440.995780] exipred 
 
 We can see that the word 'expired' is printed every 0.1 seconds
 
 
-
+### 4 
 
 
 
