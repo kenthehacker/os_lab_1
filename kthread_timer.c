@@ -19,7 +19,12 @@ static ktime_t timer_interval;
 static struct hrtimer timer;
 
 static int thread_fn(void * payload){
-    printk(KERN_ALERT "thread_fn running \n");
+	while(!kthread_should_stop()){
+		printk(KERN_ALERT "thread_fn loop nvcsw: %lu nivcsw: %lu \n",current->nvcsw, current->nivcsw);
+		set_current_state(TASK_INTERRUPTIBLE);
+		schedule();
+	}
+	printk(KERN_ALERT "thread_fn EXITING \n");
     return 0;
 }
 
@@ -38,6 +43,8 @@ static int skm_lab1_init(void){
 	k_thread = kthread_create(thread_fn, NULL, "k_thread");
 
 	if (k_thread){	
+		wake_up_process(k_thread);
+
 		timer_interval = ktime_set(log_sec, log_nsec);
 		hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);	
 		timer.function = expiration;
@@ -59,13 +66,12 @@ static int skm_lab1_init(void){
  */
 static void skm_lab1_exit(void){
 	printk(KERN_ALERT "timer lab1 module offloaded \n");
-	//use hrtimer_cancel() to cancel the module's timer
 	if (hrtimer_cancel(&timer) == 0){
 		printk(KERN_ALERT "timer was not active \n");
 	}else{
 		printk(KERN_ALERT "timer was active \n");
 	}
-	//kthread_stop(k_thread);
+	kthread_stop(k_thread);
 
 }
 
