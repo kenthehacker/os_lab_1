@@ -26,14 +26,9 @@ MODULE_INFO(retpoline, "Y");
 static const struct modversion_info ____versions[]
 __used __section("__versions") = {
 	{ 0xbadffb04, "module_layout" },
-	{ 0x9313ca48, "param_ops_ulong" },
-	{ 0x695bf5e9, "hrtimer_cancel" },
-	{ 0xec523f88, "hrtimer_start_range_ns" },
-	{ 0xa362bf8f, "hrtimer_init" },
+	{ 0x23196a6c, "kthread_stop" },
 	{ 0xbf8d9e8a, "wake_up_process" },
 	{ 0xfe6f205b, "kthread_create_on_node" },
-	{ 0x5cc2a511, "hrtimer_forward" },
-	{ 0xb43f9365, "ktime_get" },
 	{ 0xc5850110, "printk" },
 	{ 0xb1ad28e0, "__gnu_mcount_nc" },
 };
@@ -41,4 +36,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "8F78359141DC0DC5B00CF4F");
+MODULE_INFO(srcversion, "7F6EABD80CD1A4FC161DC42");
