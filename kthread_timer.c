@@ -57,14 +57,13 @@ static int skm_lab1_init(void){
  */
 static void skm_lab1_exit(void){
 	printk(KERN_ALERT "timer lab1 module offloaded \n");
-	kthread_stop(k_thread);
 	//use hrtimer_cancel() to cancel the module's timer
-	
 	if (hrtimer_cancel(&timer) == 0){
 		printk(KERN_ALERT "timer was not active \n");
 	}else{
 		printk(KERN_ALERT "timer was active \n");
 	}
+	kthread_stop(k_thread);
 
 }
 
