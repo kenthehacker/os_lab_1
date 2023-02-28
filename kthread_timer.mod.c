@@ -30,7 +30,6 @@ __used __section("__versions") = {
 	{ 0x695bf5e9, "hrtimer_cancel" },
 	{ 0xec523f88, "hrtimer_start_range_ns" },
 	{ 0xa362bf8f, "hrtimer_init" },
-	{ 0xbf8d9e8a, "wake_up_process" },
 	{ 0xfe6f205b, "kthread_create_on_node" },
 	{ 0x5cc2a511, "hrtimer_forward" },
 	{ 0xb43f9365, "ktime_get" },
@@ -41,4 +40,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "8F78359141DC0DC5B00CF4F");
+MODULE_INFO(srcversion, "64795EC3AFF04BE31223861");
