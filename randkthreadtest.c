@@ -22,7 +22,7 @@ static int thread_fn(void * payload){
  */
 
 static int skm_lab1_init(void){
-	k_thread = kthread_run(thread_fn, NULL, "k_thread");
+	k_thread = kthread_create(thread_fn, NULL, "k_thread");
 
 	if (IS_ERR(k_thread)){	
 		printk(KERN_ERR "ERROR: K_thread failed to be created \n");
