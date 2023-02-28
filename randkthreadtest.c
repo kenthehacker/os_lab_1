@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////
 
 
-struct task_struct * k_thread;
+static struct task_struct * k_thread;
 
 static int thread_fn(void * payload){
     printk(KERN_ALERT "thread_fn running \n");
@@ -22,8 +22,6 @@ static int thread_fn(void * payload){
  */
 
 static int skm_lab1_init(void){
-
-	
 	k_thread = kthread_run(thread_fn, NULL, "k_thread");
 
 	if (IS_ERR(k_thread)){	
@@ -41,9 +39,8 @@ static int skm_lab1_init(void){
  * skm_lab1_exit - exit func returns 0 on success
  */
 static void skm_lab1_exit(void){
-	printk(KERN_ALERT "timer lab1 module offloaded \n");
-	
 	kthread_stop(k_thread);
+    printk(KERN_ALERT "timer lab1 module offloaded \n");
 
 }
 
