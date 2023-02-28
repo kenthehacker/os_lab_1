@@ -27,6 +27,7 @@ static const struct modversion_info ____versions[]
 __used __section("__versions") = {
 	{ 0xbadffb04, "module_layout" },
 	{ 0x23196a6c, "kthread_stop" },
+	{ 0xbf8d9e8a, "wake_up_process" },
 	{ 0xfe6f205b, "kthread_create_on_node" },
 	{ 0xc5850110, "printk" },
 	{ 0xb1ad28e0, "__gnu_mcount_nc" },
@@ -35,4 +36,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "1F9CE23A6CAF6FBFFCD6163");
+MODULE_INFO(srcversion, "56E8CE672C1EFBEE9098914");

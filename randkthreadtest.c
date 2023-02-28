@@ -1,56 +1,38 @@
-#include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/ktime.h>
-#include <linux/hrtimer.h>
 #include <linux/kthread.h>
-////////////////////////////////////////////////////
-// lab1 make simple timer k-module with k threads //
-////////////////////////////////////////////////////
 
+MODULE_LICENSE("GPL");
 
-static struct task_struct * k_thread;
+static struct task_struct *my_thread;
+static int my_thread_func(void *data)
+{
+    printk(KERN_INFO "Kernel thread started\n");
 
-static int thread_fn(void * payload){
-    printk(KERN_ALERT "thread_fn running \n");
+    // Do whatever work needs to be done in the kernel thread
+
     return 0;
 }
 
+static int __init my_init(void)
+{
+    my_thread = kthread_run(my_thread_func, NULL, "my_thread");
 
-/*
- * skm_lab1_init - init function returns 0 on success
- */
+    if (IS_ERR(my_thread)) {
+        printk(KERN_ERR "Failed to create kernel thread\n");
+        return PTR_ERR(my_thread);
+    }
 
-static int skm_lab1_init(void){
-	k_thread = kthread_create(thread_fn, NULL, "k_thread");
-
-	if (IS_ERR(k_thread)){	
-		printk(KERN_ERR "ERROR: K_thread failed to be created \n");
-		return -1;
-	}
-	
-	printk(KERN_ALERT "GOOD NEWS EVERYONE: timer lab1 module loaded \n");
-	return 0;
+    printk(KERN_INFO "Module loaded successfully\n");
+    return 0;
 }
 
+static void __exit my_exit(void)
+{
+    kthread_stop(my_thread);
 
-
-/*
- * skm_lab1_exit - exit func returns 0 on success
- */
-static void skm_lab1_exit(void){
-	kthread_stop(k_thread);
-    printk(KERN_ALERT "timer lab1 module offloaded \n");
-
+    printk(KERN_INFO "Module unloaded\n");
 }
 
-
-
-
-module_init(skm_lab1_init);
-module_exit(skm_lab1_exit);
-
-MODULE_AUTHOR("kenthehacker");
-MODULE_DESCRIPTION("lab1 timer kmodule");
-MODULE_LICENSE("GPL"); 
-
+module_init(my_init);
+module_exit(my_exit);
