@@ -1,0 +1,1 @@
+cmd_/project/scratch01/compile/ken.m/labs/os_lab_1/kthread_timer.mod := { echo  /project/scratch01/compile/ken.m/labs/os_lab_1/kthread_timer.o;  echo; } > /project/scratch01/compile/ken.m/labs/os_lab_1/kthread_timer.mod

@@ -1,1 +1,1 @@
-obj-m := timer_kmodule_lab1.o
+obj-m := kthread_timer.o

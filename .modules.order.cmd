@@ -1,1 +1,1 @@
-cmd_/project/scratch01/compile/ken.m/labs/os_lab_1/modules.order := {   echo /project/scratch01/compile/ken.m/labs/os_lab_1/timer_kmodule_lab1.ko; :; } | awk '!x[$$0]++' - > /project/scratch01/compile/ken.m/labs/os_lab_1/modules.order
+cmd_/project/scratch01/compile/ken.m/labs/os_lab_1/modules.order := {   echo /project/scratch01/compile/ken.m/labs/os_lab_1/kthread_timer.ko; :; } | awk '!x[$$0]++' - > /project/scratch01/compile/ken.m/labs/os_lab_1/modules.order
