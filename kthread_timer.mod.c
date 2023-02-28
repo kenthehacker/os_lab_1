@@ -29,10 +29,10 @@ __used __section("__versions") = {
 	{ 0x9313ca48, "param_ops_ulong" },
 	{ 0x23196a6c, "kthread_stop" },
 	{ 0x695bf5e9, "hrtimer_cancel" },
-	{ 0xbf8d9e8a, "wake_up_process" },
-	{ 0xfe6f205b, "kthread_create_on_node" },
 	{ 0xec523f88, "hrtimer_start_range_ns" },
 	{ 0xa362bf8f, "hrtimer_init" },
+	{ 0xbf8d9e8a, "wake_up_process" },
+	{ 0xfe6f205b, "kthread_create_on_node" },
 	{ 0x5cc2a511, "hrtimer_forward" },
 	{ 0xb43f9365, "ktime_get" },
 	{ 0xc5850110, "printk" },
@@ -42,4 +42,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "1C4D0123ED0EC07557DB383");
+MODULE_INFO(srcversion, "117402CFE31DC13A6B7BEF6");
