@@ -7,7 +7,7 @@ MODULE_LICENSE("GPL");
 static struct task_struct *my_thread;
 static int my_thread_func(void *data)
 {
-    printk(KERN_INFO "Kernel thread started\n");
+    printk(KERN_INFO "YO Kernel thread started\n");
 
     // Do whatever work needs to be done in the kernel thread
 
