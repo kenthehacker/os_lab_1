@@ -27,8 +27,8 @@ static const struct modversion_info ____versions[]
 __used __section("__versions") = {
 	{ 0xbadffb04, "module_layout" },
 	{ 0x9313ca48, "param_ops_ulong" },
-	{ 0x695bf5e9, "hrtimer_cancel" },
 	{ 0x23196a6c, "kthread_stop" },
+	{ 0x695bf5e9, "hrtimer_cancel" },
 	{ 0xbf8d9e8a, "wake_up_process" },
 	{ 0xfe6f205b, "kthread_create_on_node" },
 	{ 0xec523f88, "hrtimer_start_range_ns" },
@@ -42,4 +42,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "F9DEF203862C002C093151A");
+MODULE_INFO(srcversion, "1C4D0123ED0EC07557DB383");
