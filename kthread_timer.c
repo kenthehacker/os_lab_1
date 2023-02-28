@@ -35,14 +35,14 @@ static enum hrtimer_restart expiration(struct hrtimer *timer){
 
 static int skm_lab1_init(void){
 
-	
+	/*
 	k_thread = kthread_run(thread_fn, NULL, "k_thread");
 
 	if (IS_ERR(k_thread)){	
 		printk(KERN_ERR "ERROR: K_thread failed to be created \n");
 		return -1;
 	}
-
+	*/
 
 	timer_interval = ktime_set(log_sec, log_nsec);
 	hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);	
@@ -66,7 +66,7 @@ static void skm_lab1_exit(void){
 	}else{
 		printk(KERN_ALERT "timer was active \n");
 	}
-	kthread_stop(k_thread);
+	//kthread_stop(k_thread);
 
 }
 
