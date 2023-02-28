@@ -12,13 +12,13 @@ unsigned long log_nsec = 0;
 module_param(log_sec, ulong, 0644);
 module_param(log_nsec,ulong, 0644);
 
-struct task_struct * k_threads=0;
+struct task_struct * k_thread;
 
 static ktime_t timer_interval;
 static struct hrtimer timer;
 
 static int thread_fn(void * payload){
-    printk(KERN_ALERT "thread function running \n");
+    printk(KERN_ALERT "thread_fn running \n");
     return 0;
 }
 
@@ -33,25 +33,19 @@ static enum hrtimer_restart expiration(struct hrtimer *timer){
  */
 
 static int skm_lab1_init(void){
-	printk(KERN_ALERT "timer lab1 module loaded \n");
-
-	//pass the static unsigned long variables for the module parameters into a call to ktime_set(), 
-	//and assign that function's result to the module's static timer interval variable
 	timer_interval = ktime_set(log_sec, log_nsec);
-
-	//Call hrtimer_init() with the module's timer variable and the CLOCK_MONOTONIC and HRTIMER_MODE_REL flags;
 	hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);	
-
-	//Set the function field of the module's timer variable (struct) to point to the timer expiration function
 	timer.function = expiration;
-
-	//Call hrtimer_start() with the module's timer and timer interval variables and the HRTIMER_MODE_REL flag, 
-	//to schedule the first expiration of the timer (which then will forward the scheduling of 
-	//its next expiration etc. until the module is unloaded
 	hrtimer_start(&timer, timer_interval, HRTIMER_MODE_REL);
 
-	k_threads = kthread_create(thread_fn, NULL, "a");
 
+	k_thread = kthread_run(thread_fn, NULL, "k_thread");
+	if (IS_ERR(k_thread)){
+		printk(KERN_ERR "ERROR: K_thread failed to be created \n");
+		return -1;
+	}
+
+	printk(KERN_ALERT "GOOD NEWS EVERYONE: timer lab1 module loaded \n");
 	return 0;
 }
 
