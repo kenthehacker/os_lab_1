@@ -22,7 +22,7 @@ static int thread_fn(void * payload){
 	while(!kthread_should_stop()){
 		printk(KERN_ALERT "thread_fn loop nvcsw: %lu nivcsw: %lu \n",current->nvcsw, current->nivcsw);
 		set_current_state(TASK_INTERRUPTIBLE);
-		//schedule();
+		schedule();
 	}
 	printk(KERN_ALERT "thread_fn EXITING \n");
     return 0;
