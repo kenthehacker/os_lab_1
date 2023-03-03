@@ -30,6 +30,7 @@ static int thread_fn(void * payload){
 
 static enum hrtimer_restart expiration(struct hrtimer *timer){
 	printk(KERN_ALERT "exipred \n");
+	wake_up_process(k_thread);
 	return hrtimer_forward(timer, ktime_get(), timer_interval);
 }
 
@@ -43,7 +44,7 @@ static int skm_lab1_init(void){
 	k_thread = kthread_create(thread_fn, NULL, "k_thread");
 
 	if (k_thread){	
-		wake_up_process(k_thread);
+		
 
 		timer_interval = ktime_set(log_sec, log_nsec);
 		hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);	
