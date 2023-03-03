@@ -48,10 +48,19 @@ Feb 14 16:16:46 kenpi kernel: [10440.995780] exipred
 We can see that the word 'expired' is printed every 0.1 seconds
 
 
-### 4 
-
-
-
+### Thread Design and Evaluation no.4
+my thread function:
+static int thread_fn(void * payload){
+	while(!kthread_should_stop()){
+		printk(KERN_ALERT "thread_fn loop nvcsw: %lu nivcsw: %lu \n",current->nvcsw, current->nivcsw);
+		set_current_state(TASK_INTERRUPTIBLE);
+		schedule();
+	}
+	printk(KERN_ALERT "thread_fn EXITING \n");
+    return 0;
+}
+inside of my init function, all i did was write in kthread_run(), which is very similar to kthread_create()
+but it also handles starting the kthread as well so we don't need to run wake_up_process(k_thread);
 
 
 
