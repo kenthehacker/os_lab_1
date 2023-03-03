@@ -1,0 +1,3 @@
+module add arm-rpi
+LINUX_SOURCE=/project/scratch01/compile/ken.m/linux_source/linux
+make -C $LINUX_SOURCE ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- M=$PWD modules
