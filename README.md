@@ -1,10 +1,10 @@
 # os_lab_1
 
-### 1 Names:
+### 1 Names: no.1
 
 Kenichi Matsuo ken.m@wustl.edu
 
-### 2 Module Design:
+### 2 Module Design: no.2
 
 I merely declared ulongs for log_sec and log_nsec set to 1 and 0 respectively,
 which would then be overwritten by the call to module_params. So if I altered the params
@@ -17,7 +17,7 @@ functions
 
 
 
-### 3 Timer Design and Evaluation
+### 3 Timer Design and Evaluation no.3
 
 Implementing this was simple, in order to see what the time stamp in which the timer
 was reset, all i had to do was to call on printk() every time the timer needed to be 
@@ -59,16 +59,69 @@ static int thread_fn(void * payload){
 	printk(KERN_ALERT "thread_fn EXITING \n");
     return 0;
 }
-inside of my init function, all i did was write in kthread_run(), which is very similar to kthread_create()
-but it also handles starting the kthread as well so we don't need to run wake_up_process(k_thread);
+inside of my init function, all i did was create the kthread
+The thread function that was passed in was thread_fn()
+which takes in a void * and continues to run until the stopping conditions are met
+the thread function actually doesn't run continuously, it runs everytime the 
+hrtimer is restarted since inside of the expiration function i call wake_up_process
+the schedule() function ensures that we continue in the while loop once 
+the wake_up_process() call is processed. 
+upon offloading the k-module, we stop the hrtimer and also call on kthread_stop
 
 
+fragment of system log with default time intervals fed:
+[Mar 3 14:53] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[  +1.000031] exipred 
+[  +0.000088] thread_fn loop nvcsw: 1 nivcsw: 0 
+[  +0.999938] exipred 
+[  +0.000087] thread_fn loop nvcsw: 2 nivcsw: 0 
+[  +0.999938] exipred 
+[  +0.000104] thread_fn loop nvcsw: 3 nivcsw: 0 
+[  +0.999929] exipred 
 
 
+log_sec=0 log_nsec=200000000
+[Mar 3 15:04] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[  +0.200013] exipred 
+[  +0.000089] thread_fn loop nvcsw: 1 nivcsw: 0 
+[  +0.199915] exipred 
+[  +0.000081] thread_fn loop nvcsw: 2 nivcsw: 0 
+[  +0.199919] exipred 
+[  +0.000074] thread_fn loop nvcsw: 3 nivcsw: 0 
+[  +0.199930] exipred 
+[  +0.000060] thread_fn loop nvcsw: 4 nivcsw: 0 
+
+log_sec=0 log_nsec=500000000
+[  +1.600204] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[  +0.500019] exipred 
+[  +0.000830] thread_fn loop nvcsw: 1 nivcsw: 1 
+[  +0.499179] exipred 
+[  +0.000064] thread_fn loop nvcsw: 2 nivcsw: 1 
+[  +0.499949] exipred 
+[  +0.000084] thread_fn loop nvcsw: 3 nivcsw: 1 
+
+above we see that the print outs are spaced apart quite evenly with an accuracy
+of around +- 0.001 units of time. in the shorter time periods we had 
+0 involuntary context switches but when i increased the log_nsec param, 
+i was able to observe more involuntary context switches. when i inputted short
+time spans the time used by the program was too short for an involuntary
+context switch to happen, but if we allot a bigger time slice, then
+the kernel might preempt this current process to another process w/higher
+priority or multiple processes might be running on the same CPU
+even if the current task is running the kernel switches to something else
+we obviously increment the number of voluntary context switches by 1 every 
+time the timer expires since we're forcing this to happen when the timer
+gets forwarded and the thread loops again.
 
 
+### no.5
 
-### Development Effort
+
+### no.6
+
+### no.7
+
+### Development Effort no.8
 I worked on it by myself
 
 
