@@ -2,7 +2,7 @@
 
 ### 1 Names: no.1
 
-Kenichi Matsuo ken.m@wustl.edu
+Kenichi Matsuo 
 
 ### 2 Module Design: no.2
 
@@ -49,6 +49,7 @@ We can see that the word 'expired' is printed every 0.1 seconds
 
 
 ### Thread Design and Evaluation no.4
+
 my thread function:
 static int thread_fn(void * payload){
 	while(!kthread_should_stop()){
@@ -114,12 +115,135 @@ time the timer expires since we're forcing this to happen when the timer
 gets forwarded and the thread loops again.
 
 
-### no.5
+### Multi-threading Design and Evaluation no.5
+
+Default params:
+[61505.947910] multi_kthread: loading out-of-tree module taints kernel.
+[61505.949302] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[61506.949335] exipred 
+[61506.949402] cpu:1 nvcsw: 1 nivcsw: 0 
+[61506.949409] cpu:0 nvcsw: 1 nivcsw: 0 
+[61506.949415] cpu:2 nvcsw: 1 nivcsw: 0 
+[61506.949428] cpu:3 nvcsw: 1 nivcsw: 0 
+[61507.949363] exipred 
+[61507.949428] cpu:1 nvcsw: 2 nivcsw: 0 
+[61507.949435] cpu:0 nvcsw: 2 nivcsw: 0 
+[61507.949441] cpu:2 nvcsw: 2 nivcsw: 0 
+[61507.949448] cpu:3 nvcsw: 2 nivcsw: 0 
+[61508.949391] exipred 
+[61508.949457] cpu:0 nvcsw: 3 nivcsw: 0 
+[61508.949464] cpu:1 nvcsw: 3 nivcsw: 0 
+[61508.949471] cpu:2 nvcsw: 3 nivcsw: 0 
+[61508.949478] cpu:3 nvcsw: 3 nivcsw: 0 
+[61509.949420] exipred 
+[61509.949477] cpu:1 nvcsw: 4 nivcsw: 0 
+[61509.949484] cpu:2 nvcsw: 4 nivcsw: 0 
+[61509.949491] cpu:3 nvcsw: 4 nivcsw: 0 
+
+To implement this, i simpley just added more task_structs to hold the 3 other kthreads like so:
+struct task_struct * thread_a;
+struct task_struct * thread_b;
+struct task_struct * thread_c;
+struct task_struct * thread_d;
+And to start the threads i wrote the following lines of code:
+    thread_a = kthread_create(thread_fn, NULL, "thread_a");
+    thread_b = kthread_create(thread_fn, NULL, "thread_b");
+    thread_c = kthread_create(thread_fn, NULL, "thread_c");
+    thread_d = kthread_create(thread_fn, NULL, "thread_d");
+
+    kthread_bind(thread_a,0);
+    kthread_bind(thread_b,1);
+    kthread_bind(thread_c,2);
+    kthread_bind(thread_d,3);
+They all use the same thread_fn, meaning that when wake_up_process(thread_*) is called,
+all 4 threads running on all 4 cores are made to run the thread_fn.
+
+log_sec=1 log_nsec=100000000:
+[62344.923675] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[62346.023792] exipred 
+[62346.023858] cpu:1 nvcsw: 1 nivcsw: 0 
+[62346.023864] cpu:2 nvcsw: 1 nivcsw: 0 
+[62346.023883] cpu:0 nvcsw: 1 nivcsw: 0 
+[62346.024567] cpu:3 nvcsw: 1 nivcsw: 1 
+[62347.123913] exipred 
+[62347.123975] cpu:0 nvcsw: 2 nivcsw: 0 
+[62347.123982] cpu:1 nvcsw: 2 nivcsw: 0 
+[62347.123989] cpu:3 nvcsw: 2 nivcsw: 1 
+[62347.123996] cpu:2 nvcsw: 2 nivcsw: 0 
+[62348.224031] exipred 
+[62348.224088] cpu:0 nvcsw: 3 nivcsw: 0 
+[62348.224095] cpu:1 nvcsw: 3 nivcsw: 0 
+[62348.224102] cpu:2 nvcsw: 3 nivcsw: 0 
+[62348.224109] cpu:3 nvcsw: 3 nivcsw: 1 
+[62349.324143] exipred 
+
+log_sec=0 log_nsec=500000000:
+[62414.163497] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[62414.663522] exipred 
+[62414.663582] cpu:0 nvcsw: 1 nivcsw: 0 
+[62414.663604] cpu:3 nvcsw: 1 nivcsw: 0 
+[62414.663611] cpu:2 nvcsw: 1 nivcsw: 0 
+[62414.663618] cpu:1 nvcsw: 1 nivcsw: 0 
+[62415.163548] exipred 
+[62415.163618] cpu:0 nvcsw: 2 nivcsw: 0 
+[62415.163625] cpu:1 nvcsw: 2 nivcsw: 0 
+[62415.163632] cpu:2 nvcsw: 2 nivcsw: 0 
+[62415.163639] cpu:3 nvcsw: 2 nivcsw: 0 
+[62415.663575] exipred 
+[62415.663699] cpu:3 nvcsw: 3 nivcsw: 0 
+[62415.663706] cpu:0 nvcsw: 3 nivcsw: 0 
+[62415.663713] cpu:2 nvcsw: 3 nivcsw: 0 
+[62415.663736] cpu:1 nvcsw: 3 nivcsw: 0 
+[62416.163595] exipred 
+[62416.163656] cpu:0 nvcsw: 4 nivcsw: 0 
+[62416.163669] cpu:2 nvcsw: 4 nivcsw: 0 
+[62416.163681] cpu:3 nvcsw: 4 nivcsw: 0 
+[62416.163697] cpu:1 nvcsw: 4 nivcsw: 0 
+[62416.663618] exipred 
+
+log_sec=5 log_nsec=000000000:
+[Mar 4 12:11] GOOD NEWS EVERYONE: timer lab1 module loaded 
+[  +5.000091] exipred 
+[  +0.000075] cpu:0 nvcsw: 1 nivcsw: 0 
+[  +0.000007] cpu:1 nvcsw: 1 nivcsw: 0 
+[  +0.000007] cpu:2 nvcsw: 1 nivcsw: 0 
+[  +0.000007] cpu:3 nvcsw: 1 nivcsw: 0 
+[  +4.999977] exipred 
+[  +0.000058] cpu:0 nvcsw: 2 nivcsw: 0 
+[  +0.000006] cpu:1 nvcsw: 2 nivcsw: 0 
+[  +0.000008] cpu:2 nvcsw: 2 nivcsw: 0 
+[  +0.000007] cpu:3 nvcsw: 2 nivcsw: 0 
+[  +4.999988] exipred 
+[  +0.000073] cpu:2 nvcsw: 3 nivcsw: 0 
+[  +0.000009] cpu:3 nvcsw: 3 nivcsw: 0 
+[  +0.000013] cpu:1 nvcsw: 3 nivcsw: 0 
+[  +0.000027] cpu:0 nvcsw: 3 nivcsw: 0 
+[  +4.999931] exipred 
+[  +0.000065] cpu:3 nvcsw: 4 nivcsw: 0 
+[  +0.000008] cpu:2 nvcsw: 4 nivcsw: 0 
+[  +0.000013] cpu:1 nvcsw: 4 nivcsw: 0 
+[  +0.000008] cpu:0 nvcsw: 4 nivcsw: 0 
+
+when increasing the number of time, it's more likley as demonstrated to have
+increased number of involuntary context switches. as explained in the prior 
+question, the kernel is waiting for a longer period of time meaning higher chance
+something with a higher priority needs to run so we make the CPU run another
+process while the timer is expiring; however, the number of involuntary context
+switches did not increase with multi threadingm Most likely because we're spreading 
+out our work over 4 different cores and these threads won't interefere with 
+each other as well as the fact that the PI is not running anything intensive
+meaning there's no need for involuntary switches. involuntary switches is a bad thing.
+Obviously the voluntary context switch numbers won't be affected since we increment
+with every single time the timer expires. The timer variation doesn't seem to be affected
+for example when i ran it with log_sec=5 and log_nsec=0 we had a += 0.001 time 
+which is consistent throughout all of the trials and when compared between kthread.c and my
+multithread.c programs. 
+
+### Screenshot is attached no.6
+
+### System Performance no.7
 
 
-### no.6
-
-### no.7
 
 ### Development Effort no.8
 I worked on it by myself
