@@ -229,7 +229,7 @@ increased number of involuntary context switches. as explained in the prior
 question, the kernel is waiting for a longer period of time meaning higher chance
 something with a higher priority needs to run so we make the CPU run another
 process while the timer is expiring; however, the number of involuntary context
-switches did not increase with multi threadingm Most likely because we're spreading 
+switches did not increase with multi threading, most likely because we're spreading 
 out our work over 4 different cores and these threads won't interefere with 
 each other as well as the fact that the PI is not running anything intensive
 meaning there's no need for involuntary switches. involuntary switches is a bad thing.
@@ -243,6 +243,20 @@ multithread.c programs.
 
 ### System Performance no.7
 
+On one of the screenshots we can see that thread_a runs for a bit longer than thread_b. 
+This is a clear indication that the threads don't necessarily run to completion all the time.
+Since they're in k-mode, schedulers and interrupts can interrupt them just as how 
+thread_b was interrupted by sched_switch in the screenshot. I also ran dense_mm at the same time
+hence, we can see dense_mm in the kernelshark window. 
+
+Jitter min: 0.000004
+Jitter max: 0.000008
+Jitter Mean: 0.00000305
+
+over 5 wake ups for thread_a:
+thread_a min: 4.50000079581514e-05
+thread_a max: 0.00015300000086426735
+thread_a mean: 0.00011520000407472253
 
 
 ### Development Effort no.8
